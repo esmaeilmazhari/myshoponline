@@ -1,0 +1,16 @@
+﻿{% extends "base.html" %}
+{% block title %}سفارش شما ثبت شد{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="alert alert-success py-5">
+        <h1 class="display-4">🎉</h1>
+        <h2 class="mb-3">سفارش شما با موفقیت ثبت شد!</h2>
+        <p class="lead">مرتبه پیگیری سفارش شما: <strong>{{ order.tracking_code }}</strong></p>
+        <p>ایمیل تأیید برای <strong>{{ order.email }}</strong> ارسال شد.</p>
+        <hr>
+        <p>موجودی سفارش شما به زودی پردازش خواهد شد.</p>
+        <a href="{% url 'shop:product_list' %}" class="btn btn-primary mt-3">بازگشت به صفحه اصلی</a>
+    </div>
+</div>
+{% endblock %}

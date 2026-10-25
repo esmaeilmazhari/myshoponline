@@ -1,0 +1,94 @@
+{% extends 'shop/base.html' %}
+{% block title %}ثبت سفارش | فروشگاه لوازم خانگی{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h2 class="fw-bold" style="color: #4A5A6A;">تکمیل خرید</h2>
+    </div>
+
+    <div class="row">
+        <!-- ستون فرم اطلاعات مشتری (سمت راست در RTL) -->
+        <div class="col-lg-7 mb-4">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold mb-4 border-bottom pb-2">اطلاعات گیرنده</h4>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <!-- نام و نام خانوادگی -->
+                            <div class="col-md-6">
+                                <label class="form-label">نام</label>
+                                <input type="text" name="first_name" class="form-control" required placeholder="نام خود را وارد کنید">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">نام خانوادگی</label>
+                                <input type="text" name="last_name" class="form-control" required placeholder="نام خانوادگی خود را وارد کنید">
+                            </div>
+
+                            <!-- ایمیل و تلفن -->
+                            <div class="col-md-6">
+                                <label class="form-label">ایمیل</label>
+                                <input type="email" name="email" class="form-control" required placeholder="example@email.com" dir="ltr">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">تلفن همراه</label>
+                                <input type="text" name="phone" class="form-control" required placeholder="09123456789" dir="ltr">
+                            </div>
+
+                            <!-- آدرس -->
+                            <div class="col-12">
+                                <label class="form-label">آدرس کامل پستی</label>
+                                <input type="text" name="address" class="form-control" required placeholder="استان، شهر، خیابان، پلاک...">
+                            </div>
+
+                            <!-- کد پستی -->
+                            <div class="col-md-6">
+                                <label class="form-label">کد پستی</label>
+                                <input type="text" name="postal_code" class="form-control" required placeholder="کد ۱۰ رقمی" dir="ltr">
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-lg text-white" style="background-color: #28a745;">
+                                <i class="bi bi-credit-card"></i> ثبت سفارش و پرداخت
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ستون خلاصه سبد خرید (سمت چپ در RTL) -->
+        <div class="col-lg-5 mb-4">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold mb-4 border-bottom pb-2" style="color: #4A5A6A;">خلاصه سفارش</h4>
+                    
+                    <ul class="list-group list-group-flush mb-3">
+                        {% for item in cart %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
+                                <div>
+                                    <h6 class="my-0 fw-bold">{{ item.product.name }}</h6>
+                                    <small class="text-muted">تعداد: {{ item.quantity }} عدد</small>
+                                </div>
+                                <span class="text-muted">{{ item.total_price|floatformat:0 }} تومان</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <span class="fw-bold fs-5">مبلغ قابل پرداخت:</span>
+                        <span class="fw-bold fs-5 text-danger">{{ cart.get_total_price|floatformat:0 }} تومان</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-3 text-center">
+                <a href="{% url 'shop:cart_detail' %}" class="text-decoration-none text-muted small">
+                    <i class="bi bi-arrow-right"></i> بازگشت به سبد خرید
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

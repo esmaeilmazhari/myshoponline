@@ -1,0 +1,30 @@
+{% extends 'shop/base.html' %}
+{% block title %}پرداخت موفق | فروشگاه لوازم خانگی{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-6 text-center">
+            <div class="card border-0 shadow-sm py-5" style="border-radius: 12px;">
+                <div class="card-body">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    <h2 class="fw-bold mt-4 mb-3" style="color: #28a745;">پرداخت با موفقیت انجام شد!</h2>
+                    <p class="text-muted mb-4">از خرید شما سپاسگزاریم. سفارش شما ثبت شد و به زودی برای شما ارسال خواهد شد.</p>
+
+                    <!-- نمایش کد رهگیری -->
+                    {% if order.tracking_code %}
+                        <div class="alert alert-success d-inline-block px-4 py-2 mb-4" role="alert">
+                            <strong>کد رهگیری سفارش شما:</strong> 
+                            <span class="fw-bold fs-5 ms-2" style="font-family: monospace; direction: ltr; display: inline-block;">{{ order.tracking_code }}</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 col-md-8 mx-auto mt-3">
+                        <a href="{% url 'shop:product_list' %}" class="btn btn-lg text-white" style="background-color: #4A5A6A;">
+                            بازگشت به فروشگاه
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

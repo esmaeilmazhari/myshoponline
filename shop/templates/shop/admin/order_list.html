@@ -1,0 +1,45 @@
+{% extends 'shop/base.html' %}
+{% load jformat %}
+{% block title %}مدیریت سفارشات{% endblock %}
+
+{% block content %}
+    <h2>مدیریت سفارشات</h2>
+    <table style="width:100%; background:#fff; border-collapse:collapse; margin-top:20px;">
+        <tr style="background:#eee;">
+            <th>شناسه</th>
+            <th>نام مشتری</th>
+            <th>تاریخ</th>
+            <th>مبلغ</th>
+            <th>وضعیت</th>
+            <th>کد پیگیری</th>
+            <th>عملیات</th>
+        </tr>
+        {% for order in orders %}
+        <tr style="border-bottom:1px solid #ddd;">
+            <td>{{ order.id }}</td>
+            <td>{{ order.first_name }} {{ order.last_name }}</td>
+            <td>{{ order.created|jformat:"%Y/%m/%d - %H:%M" }}</td>
+            <td>{{ order.get_total_cost|floatformat:0 }} تومان</td>
+            <td>
+                {% if order.paid %}
+                    <span style="color:green;">پرداخت شده</span>
+                {% else %}
+                    <span style="color:red;">در انتظار پرداخت</span>
+                {% endif %}
+            </td>
+            <td>{{ order.tracking_code|default:"-" }}</td>
+            <td>
+                <a href="{% url 'shop:admin_order_detail' order.id %}" class="btn" style="font-size:0.9em; padding:5px 10px;">مشاهده</a>
+                <form action="{% url 'shop:admin_order_delete' order.id %}" method="post" style="display:inline;" onsubmit="return confirm('آیا از حذف سفارش #{{ order.id }} مطمئن هستید؟');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" style="font-size:0.9em; padding:5px 10px;">حذف</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">هیچ سفارشی ثبت نشده است.</td></tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{% url 'shop:product_list' %}" class="btn">بازگشت به فروشگاه</a>
+{% endblock %}

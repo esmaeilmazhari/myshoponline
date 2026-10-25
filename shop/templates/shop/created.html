@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ثبت موفق سفارش</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #f4f6f9; margin: 0; padding: 50px; text-align: center; }
+        .box { max-width: 600px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #28a745; }
+        p { font-size: 18px; color: #555; }
+        .btn { display: inline-block; margin-top: 20px; background: #007bff; color: white; padding: 10px 25px; text-decoration: none; border-radius: 4px; }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>با تشکر! سفارش شما با موفقیت ثبت شد.</h2>
+        <p>شماره سفارش شما: <strong>{{ order.id }}</strong></p>
+        <p>سفارش شما ثبت شده و به زودی پردازش خواهد شد.</p>
+        <a href="{% url 'shop:product_list' %}" class="btn">بازگشت به صفحه اصلی فروشگاه</a>
+    </div>
+</body>
+</html>

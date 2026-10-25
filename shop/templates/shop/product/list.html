@@ -1,0 +1,126 @@
+{% extends 'shop/base.html' %}
+{% block title %}لیست محصولات | فروشگاه لوازم خانگی{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h2 class="fw-bold" style="color: #4A5A6A;">محصولات</h2>
+    </div>
+
+    <!-- بخش جستجو -->
+    <div class="row mb-4 bg-white p-3 rounded-3 shadow-sm">
+        <div class="col-md-8 mx-auto">
+            <form method="get" action="{% url 'shop:product_list' %}" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" placeholder="نام محصول را جستجو کنید..." value="{{ search_query }}">
+                <button type="submit" class="btn text-white px-4" style="background-color: #4A5A6A; white-space: nowrap;">
+                    <i class="bi bi-search"></i> جستجو
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- گرید محصولات -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
+        {% for product in products %}
+            <div class="col">
+                <!-- کارت محصول با حاشیه ملایم -->
+                <div class="card h-100 shadow-sm position-relative" style="border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0 !important;">
+                    
+                    {% if product.discount_price %}
+                        <span class="position-absolute top-0 start-0 m-2 badge bg-danger fs-6 z-3">
+                            {{ product.get_discount_percent }}% تخفیف
+                        </span>
+                    {% endif %}
+
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top p-3" alt="{{ product.name }}" style="height: 220px; object-fit: contain;">
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-center bg-light" style="height: 220px;">
+                            <span class="text-muted">بدون عکس</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body d-flex flex-column text-center p-3">
+                        <h5 class="card-title text-truncate" style="font-size: 1.1rem;">
+                            <a href="{% url 'shop:product_detail' product.slug %}" class="text-decoration-none text-dark fw-bold">
+                                {{ product.name }}
+                            </a>
+                        </h5>
+
+                        <div class="mt-auto mb-2">
+                            {% if product.discount_price %}
+                                <div class="text-muted text-decoration-line-through mb-1" style="font-size: 0.85rem;">
+                                    {{ product.price|floatformat:0 }} تومان
+                                </div>
+                                <div class="text-danger fw-bold fs-5">
+                                    {{ product.discount_price|floatformat:0 }} تومان
+                                </div>
+                            {% else %}
+                                <div class="text-dark fw-bold fs-5 mt-3">
+                                    {{ product.price|floatformat:0 }} تومان
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <p class="text-muted mb-3" style="font-size: 0.85rem;">
+                            موجودی: {{ product.stock }}
+                        </p>
+
+                        {% if product.stock > 0 %}
+                            <form action="{% url 'shop:cart_add' product.id %}" method="post" class="d-flex justify-content-center gap-2 mt-auto">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" 
+                                       class="form-control text-center" style="width: 60px;" aria-label="تعداد">
+                                <button type="submit" class="btn btn-success flex-grow-1" style="background-color: #4A5A6A; border-color: #4A5A6A;">
+                                    افزودن به سبد
+                                </button>
+                            </form>
+                        {% else %}
+                            <p class="text-danger fw-bold text-center mt-auto mb-0">اتمام موجودی</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <h4 class="text-muted">هیچ محصولی با این مشخصات یافت نشد.</h4>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- صفحه‌بندی -->
+    {% if is_paginated %}
+        <nav class="mt-5 mb-4" aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link text-dark" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo; قبلی</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo; قبلی</span>
+                    </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link" style="background-color: #4A5A6A; border-color: #4A5A6A;">
+                        صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link text-dark" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">بعدی &raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">بعدی &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}

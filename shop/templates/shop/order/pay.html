@@ -1,0 +1,71 @@
+{% extends 'shop/base.html' %}
+{% block title %}درگاه پرداخت | فروشگاه لوازم خانگی{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5 mb-5">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+            <div class="card border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                
+                <!-- هدر درگاه پرداخت -->
+                <div class="text-center text-white p-4" style="background-color: #4A5A6A;">
+                    <i class="bi bi-shield-lock-fill fs-1 mb-2"></i>
+                    <h3 class="fw-bold mb-0">درگاه پرداخت اینترنتی</h3>
+                    <p class="mb-0 mt-2 opacity-75">پرداخت امن با کارت‌های عضو شتاب</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <!-- نمایش مبلغ -->
+                    <div class="text-center mb-4 pb-3 border-bottom">
+                        <span class="text-muted d-block mb-1">مبلغ قابل پرداخت:</span>
+                        <h2 class="fw-bold text-danger">{{ order.get_total_cost|floatformat:0 }} <span class="fs-5">تومان</span></h2>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- شماره کارت -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">شماره کارت</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-credit-card"></i></span>
+                                <input type="text" name="card_number" class="form-control form-control-lg text-center" 
+                                       placeholder="XXXX - XXXX - XXXX - XXXX" maxlength="16" required 
+                                       style="letter-spacing: 2px; font-family: monospace; direction: ltr;">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <!-- CVV2 -->
+                            <div class="col-6">
+                                <label class="form-label fw-bold">CVV2</label>
+                                <input type="text" name="cvv2" class="form-control form-control-lg text-center" 
+                                       placeholder="۱۲۳" maxlength="4" required style="direction: ltr;">
+                            </div>
+                            <!-- تاریخ انقضا -->
+                            <div class="col-6">
+                                <label class="form-label fw-bold">تاریخ انقضا</label>
+                                <input type="text" name="expiry_date" class="form-control form-control-lg text-center" 
+                                       placeholder="MM/YY" maxlength="5" required style="direction: ltr;">
+                            </div>
+                        </div>
+
+                        <!-- دکمه پرداخت -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-lg text-white" style="background-color: #28a745; border-radius: 8px;">
+                                <i class="bi bi-lock-fill"></i> پرداخت مبلغ
+                            </button>
+                            <a href="{% url 'shop:cart_detail' %}" class="btn btn-outline-secondary mt-2">
+                                لغو و بازگشت به سبد خرید
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- فوتر درگاه -->
+                <div class="bg-light text-center py-3 border-top">
+                    <small class="text-muted"><i class="bi bi-shield-check"></i> اطلاعات کارت شما نزد ما محفوظ است</small>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
