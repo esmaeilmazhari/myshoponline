@@ -8,5 +8,5 @@ urlpatterns = [
     path('', include('shop.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# همیشه فایل‌های مدیا را سرو کن (حتی در حالت DEBUG=False برای پروژه روی Render)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
