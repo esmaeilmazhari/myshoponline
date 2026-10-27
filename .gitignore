@@ -1,8 +1,7 @@
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 
 # Environments (محیط مجازی)
 .env
@@ -13,14 +12,19 @@ ENV/
 env.bak/
 venv.bak/
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
 
-# Static and Media Files (مهم‌ترین بخش برای حل مشکل شما)
+# Static and Media Files (بسیار مهم برای جلوگیری از تداخل در Render)
 staticfiles/
+staticfiles_new/
 media/
 
-# VS Code
+# VS Code / IDE
 .vscode/
+.idea/
+*.swp
+.DS_Store
