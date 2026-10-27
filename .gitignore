@@ -18,9 +18,7 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# Static and Media Files (بسیار مهم برای جلوگیری از تداخل در Render)
-staticfiles/
-staticfiles_new/
+# Media Files
 media/
 
 # VS Code / IDE
