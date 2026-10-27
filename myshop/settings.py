@@ -108,12 +108,11 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static', # مسیر پوشه فایل‌های استاتیک اصلی (CSS/JS)
 ]
 
-# نام پوشه خروجی را به static_v4 تغییر دادیم تا کش رندر کاملاً دور زده شود
-STATIC_ROOT = BASE_DIR / 'static_v4'
+# نام پوشه خروجی را به static_final تغییر دادیم تا کش رندر کاملاً دور زده شود
+STATIC_ROOT = BASE_DIR / 'static_final'
 
-# استفاده از استوریج استاندارد (بدون WhiteNoise) برای اطمینان از کپی شدن فایل‌ها
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
+# استفاده از تنظیمات استاندارد و بهینه WhiteNoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (Uploaded by users like product images)
 MEDIA_URL = '/media/'
