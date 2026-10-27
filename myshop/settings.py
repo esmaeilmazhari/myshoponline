@@ -101,13 +101,14 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# دقت کنید که اسلش اول اضافه شد
 STATIC_URL = '/static/' 
 STATICFILES_DIRS = [
     BASE_DIR / 'static', # مسیر پوشه فایل‌های استاتیک (CSS/JS)
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# تغییر موقت برای جلوگیری از خطای کش در رندر
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Media files (Uploaded by users like product images)
 MEDIA_URL = '/media/'
