@@ -26,7 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    
+    # Cloudinary باید قبل از staticfiles باشد
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary', # Cloudinary باید بعد از staticfiles باشد
     
     # Third-party apps
     'django_jalali',  # برای تاریخ شمسی
@@ -37,7 +41,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # اضافه شده برای مدیریت فایل‌های استاتیک در رندر
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # برای مدیریت فایل‌های استاتیک در رندر
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,7 +101,8 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+# دقت کنید که اسلش اول اضافه شد
+STATIC_URL = '/static/' 
 STATICFILES_DIRS = [
     BASE_DIR / 'static', # مسیر پوشه فایل‌های استاتیک (CSS/JS)
 ]
@@ -107,6 +112,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Media files (Uploaded by users like product images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# ==========================================
+# Cloudinary Configuration
+# ==========================================
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+# استفاده از Cloudinary برای فایل‌های Media (تصاویر محصولات)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
