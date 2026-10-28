@@ -5,12 +5,14 @@ from .models import Product, Order, OrderItem
 
 class ProductListView(ListView):
     model = Product
-    template_name = 'shop/product_list.html'
+    # مسیر اصلاح شده: چون فایل شما داخل پوشه product است
+    template_name = 'shop/product/list.html' 
     context_object_name = 'products'
 
 class ProductDetailView(DetailView):
     model = Product
-    template_name = 'shop/product_detail.html'
+    # این یکی درست بود چون فایلش مستقیم داخل shop است
+    template_name = 'shop/product_detail.html' 
     context_object_name = 'product'
 
 # --- سبد خرید ---
@@ -70,13 +72,11 @@ def order_create(request):
         return redirect('shop:cart_detail')
     
     if request.method == 'POST':
-        # ایجاد سفارش ساده
-        order = Order.objects.create() # فیلدهای سفارشی بسته به مدل شما
+        order = Order.objects.create() 
         for product_id, quantity in cart.items():
             product = Product.objects.get(pk=product_id)
             OrderItem.objects.create(order=order, product=product, price=product.price, quantity=quantity)
         
-        # پاک کردن سبد خرید بعد از ثبت سفارش
         del request.session['cart']
         return redirect('shop:payment_process', order_id=order.id)
         
