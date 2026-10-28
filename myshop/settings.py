@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', '*******')
 
 # حالا که سایت درست شده، باید حتماً False باشد تا امن بماند
-DEBUG = False 
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
