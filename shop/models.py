@@ -1,11 +1,15 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from cloudinary.models import CloudinaryField  # اضافه شده برای آپلود در Cloudinary
 
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
-    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
+    
+    # تغییر اصلی: استفاده از CloudinaryField به جای ImageField
+    image = CloudinaryField('image', blank=True, null=True) 
+    
     description = models.TextField(blank=True)
     price = models.DecimalField(
         max_digits=10,
@@ -22,6 +26,10 @@ class Product(models.Model):
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # این کلاس برای رفع هشدار UnorderedObjectListWarning در لاگ‌های Render است
+        ordering = ['-created']
 
     def __str__(self):
         return self.name
