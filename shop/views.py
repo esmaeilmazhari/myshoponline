@@ -9,7 +9,6 @@ class ProductListView(ListView):
     context_object_name = 'products'
 
 def cart_detail(request):
-    # مدیریت سبد خرید مبتنی بر Session
     cart = request.session.get('cart', {})
     cart_items = []
     total_price = 0
@@ -18,7 +17,11 @@ def cart_detail(request):
         try:
             product = Product.objects.get(pk=product_id)
             total_price += product.price * quantity
-            cart_items.append({'product': product, 'quantity': quantity, 'total_price': product.price * quantity})
+            cart_items.append({
+                'product': product, 
+                'quantity': quantity, 
+                'total_price': product.price * quantity
+            })
         except Product.DoesNotExist:
             continue
             
@@ -27,7 +30,7 @@ def cart_detail(request):
         'total_price': total_price
     })
 
-def add_to_cart(request, product_id):
+def cart_add(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     cart = request.session.get('cart', {})
     
