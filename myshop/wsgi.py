@@ -1,11 +1,11 @@
 """
-WSGI config for myshop project.
+WSGI config for myshoponline project.
 """
 import os
 import cloudinary
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myshop.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myshoponline.settings')
 
 # تنظیم دستی کلیدهای Cloudinary برای اطمینان از اتصال در Render
 cloudinary.config(
