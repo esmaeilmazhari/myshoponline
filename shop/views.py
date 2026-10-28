@@ -1,23 +1,14 @@
-from django.shortcuts import render, get_object_or_404
-from django.contrib.admin.views.decorators import staff_member_required
-from django.http import HttpResponse
-from .models import Order, Product
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import user_passes_test
+from django.views.generic import ListView
+from .models import Product, Order, OrderItem
 
-def product_list(request):
-    products = Product.objects.filter(available=True)
-    return render(request, 'shop/product/list.html', {
-        'products': products
-    })
+class ProductListView(ListView):
+    model = Product
+    template_name = 'shop/product_list.html'
+    context_object_name = 'products'
 
-def product_detail(request, id, slug):
-    product = get_object_or_404(Product, id=id, slug=slug, available=True)
-    return render(request, 'shop/product/detail.html', {'product': product})
-
-@staff_member_required
-def admin_order_list(request):
-    # تست موقت ادمین
-    return HttpResponse("Test Admin Orders Page works!")
-    
-    # بعد از تایید، به این شکل تغییر می‌کند:
-    # orders = Order.objects.all()
-    # return render(request, 'shop/admin/order_list.html', {'orders': orders})
+@user_passes_test(lambda u: u.is_staff)
+app_admin_order_list(request):
+    orders = Order.objects.all().order_by('-created_at')
+    return render(request, 'shop/admin/order_list.html', {'orders': orders})
