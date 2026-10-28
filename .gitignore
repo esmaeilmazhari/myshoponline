@@ -18,7 +18,8 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# Media Files
+# Static and Media Files (بسیار مهم برای رندر)
+staticfiles/
 media/
 
 # VS Code / IDE

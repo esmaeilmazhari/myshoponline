@@ -8,8 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', '*******')
 
-# حالا که سایت درست شده، باید حتماً False باشد تا امن بماند
-DEBUG = True
+# در رندر به صورت پیش‌فرض False است. اگر نیاز به دیدن خطا داشتید، در Environment رندر متغیر DEBUG=True را اضافه کنید.
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -19,16 +19,22 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    
+    # Cloudinary
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
+    
+    # Third-party
     'django_jalali',
+    
+    # Local apps
     'shop',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware', # باید دقیقا بعد از Security باشد
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,8 +48,8 @@ ROOT_URLCONF = 'myshop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], 
-        'APP_DIRS': True, 
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True, # این گزینه باعث می‌شود تمپلیت‌های داخل اپ shop پیدا شوند
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -77,24 +83,27 @@ USE_I18N = True
 USE_TZ = True
 
 # ==========================================
-# Static files
+# Static & Media Files
 # ==========================================
 STATIC_URL = '/static/' 
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# تنظیمات WhiteNoise برای فشرده‌سازی و سرو فایل‌ها
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ==========================================
-# Media & Cloudinary
-# ==========================================
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# ==========================================
+# Cloudinary Configuration
+# ==========================================
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
