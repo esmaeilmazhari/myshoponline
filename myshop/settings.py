@@ -8,10 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', '*******')
 
-# این را False کردیم تا سایت به حالت Production برود
+# حالا که سایت درست شده، باید حتماً False باشد تا امن بماند
 DEBUG = False 
 
-# برای جلوگیری از هرگونه خطای مربوط به هاست در رندر
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -29,7 +28,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # باید دقیقا اینجا باشد
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -43,9 +42,7 @@ ROOT_URLCONF = 'myshop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # مسیر اصلی تمپلیت ها
         'DIRS': [BASE_DIR / 'templates'], 
-        # این گزینه True باشد تا تمپلیت های داخل اپ shop هم پیدا شوند
         'APP_DIRS': True, 
         'OPTIONS': {
             'context_processors': [
