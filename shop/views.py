@@ -9,6 +9,6 @@ class ProductListView(ListView):
     context_object_name = 'products'
 
 @user_passes_test(lambda u: u.is_staff)
-app_admin_order_list(request):
+def app_admin_order_list(request):
     orders = Order.objects.all().order_by('-created_at')
     return render(request, 'shop/admin/order_list.html', {'orders': orders})
