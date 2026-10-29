@@ -43,7 +43,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'myshoponline.urls'
+# اصلاح شد به نام پوشه پروژه شما (myshop)
+ROOT_URLCONF = 'myshop.urls'
 
 TEMPLATES = [
     {
@@ -61,7 +62,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'myshoponline.wsgi.application'
+# اصلاح شد به نام پوشه پروژه شما (myshop)
+WSGI_APPLICATION = 'myshop.wsgi.application'
 
 
 # Database

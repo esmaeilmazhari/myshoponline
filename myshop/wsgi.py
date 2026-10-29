@@ -1,19 +1,16 @@
 """
 WSGI config for myshop project.
+
+It exposes the WSGI callable as a module-level variable named ``application``.
+
+For information on this file, see
+https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/
 """
+
 import os
-import cloudinary
+
 from django.core.wsgi import get_wsgi_application
 
-# اصلاح شد به myshop
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myshop.settings')
-
-# تنظیمات کلودینری برای آپلود عکس
-cloudinary.config(
-    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.environ.get('CLOUDINARY_API_KEY'),
-    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
-    secure=True
-)
 
 application = get_wsgi_application()
