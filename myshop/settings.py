@@ -47,7 +47,7 @@ ROOT_URLCONF = 'myshoponline.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.Templates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'myshoponline.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES ={
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -112,7 +112,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# تنظیمات جدید و استاندارد ذخیره‌سازی برای جنگو ۶ (جهت سازگاری با WhiteNoise و جلوگیری از خطای Cloudinary)
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
