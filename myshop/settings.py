@@ -1,17 +1,24 @@
-"""
-Django settings for myshop project.
-"""
 from pathlib import Path
 import os
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY', '*******')
 
-# در رندر به صورت پیش‌فرض False است. اگر نیاز به دیدن خطا داشتید، در Environment رندر متغیر DEBUG=True را اضافه کنید.
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-your-secret-key-here'  # کلید امنیتی خود را بگذارید
+
+# SECURITY WARNING: don't run with debug turned on in production!
+# در محیط پروداکشن باید False باشد، اما چون معمولاً متغیر محیطی تنظیم می‌شود:
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ['*']
+
+
+# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,22 +26,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    
-    # Cloudinary
-    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
     
-    # Third-party
-    'django_jalali',
-    
-    # Local apps
-    'shop',
+    # اپلیکیشن‌های شما:
+    # 'shop',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # باید دقیقا بعد از Security باشد
+    # اضافه کردن WhiteNoise برای لود صحیح فایل‌های استاتیک در سرورهای ابری
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -43,16 +44,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'myshop.urls'
+ROOT_URLCONF = 'myshoponline.urls'  # نام پروژه خود را چک کنید
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True, # این گزینه باعث می‌شود تمپلیت‌های داخل اپ shop پیدا شوند
+        'BACKEND': 'django.template.backends.django.Templates',
+        'DIRS': [],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.status',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -61,50 +63,61 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'myshop.wsgi.application'
+WSGI_APPLICATION = 'myshoponline.wsgi.application'
+
+
+# Database
+# https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
-
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-LANGUAGE_CODE = 'fa-ir'
+
+# Password validation
+# https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericValidator',
+    },
+]
+
+
+# Internationalization
+# https://docs.djangoproject.com/en/6.1/topics/internationalization/
+
+LANGUAGE_CODE = 'fa-ir'  # فارسی
+
 TIME_ZONE = 'Asia/Tehran'
+
 USE_I18N = True
+
 USE_TZ = True
 
-# ==========================================
-# Static & Media Files
-# ==========================================
-STATIC_URL = '/static/' 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/6.1/howto/static-files/
+
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# تنظیمات WhiteNoise برای فشرده‌سازی و سرو فایل‌ها
+# تنظیمات ذخیره‌سازی برای WhiteNoise جهت فشرده‌سازی و کش کردن فایل‌های استاتیک
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-# ==========================================
-# Cloudinary Configuration
-# ==========================================
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Default primary key field type
+# https://docs.djangoproject.com/en/6.1/ref/default/model-default#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CART_SESSION_ID = 'cart'
