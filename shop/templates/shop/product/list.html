@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+
+{% block title %}
+  {% if current_category %}{{ current_category.name }}{% else %}محصولات{% endif %}
+{% endblock %}
+
+{% block content %}
+  <div id="sidebar">
+    <h3>دسته‌بندی‌ها</h3>
+    <ul>
+      <li {% if not current_category %}class="selected"{% endif %}>
+        <a href="{% url 'shop:product_list' %}">همه محصولات</a>
+      </li>
+      {% for c in categories %}
+        <li {% if current_category.slug == c.slug %}class="selected"{% endif %}>
+          <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  
+  <div id="main" class="product-list">
+    <h1>{% if current_category %}{{ current_category.name }}{% else %}محصولات{% endif %}</h1>
+    {% for product in products %}
+      <div class="item">
+        <a href="{{ product.get_absolute_url }}">
+          <img src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/150{% endif %}">
+        </a>
+        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+        تومان {{ product.price }}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

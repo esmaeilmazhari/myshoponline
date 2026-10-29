@@ -9,9 +9,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 class ProductListView(ListView):
   model = Product
-  template_name = (
-      'shop/product_list.html'  # هماهنگ با فایل موجود در پروژه شما
-  )
+  template_name = 'shop/product/list.html'  # مسیر استاندارد داخل پوشه product
   context_object_name = 'products'
 
   def get_queryset(self):
@@ -32,9 +30,7 @@ class ProductListView(ListView):
 
 class ProductDetailView(DetailView):
   model = Product
-  template_name = (
-      'shop/product_detail.html'  # هماهنگ با فایل موجود در پروژه شما
-  )
+  template_name = 'shop/product/detail.html'  # مسیر استاندارد داخل پوشه product
   context_object_name = 'product'
 
   def get_context_data(self, **kwargs):
@@ -74,7 +70,6 @@ def cart_remove(request, product_id):
 def order_create(request):
   cart = Cart(request)
   if request.method == 'POST':
-    # دریافت اطلاعات ارسال شده از کاربر (در صورت وجود فرم ثبت سفارش)
     order = Order.objects.create()
     for item in cart:
       OrderItem.objects.create(
@@ -89,12 +84,10 @@ def order_create(request):
 
 
 def payment_process(request):
-  # منطق اتصال به درگاه پرداخت
   return render(request, 'shop/payment_process.html')
 
 
 def payment_callback(request):
-  # منطق بازگشت از درگاه پرداخت
   return render(request, 'shop/payment_callback.html')
 
 
